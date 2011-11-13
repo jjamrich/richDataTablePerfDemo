@@ -24,19 +24,26 @@ package org.jboss.example.portlet.jasper.db;
 import java.util.Date;
 import java.util.Random;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author jjamrich
  *
  */
 public class InitDbHelper {
+    
+    private static final Log log = LogFactory.getLog(InitDbHelper.class);
 	
 	/** Records count we want add to DB */
-	public static final int RECORDS_COUNT = 30;
+	public static final int RECORDS_COUNT = 2000;
 	
 	public static final void initDb(PhoneCallHibernateService hibernateService, int maxRecords) throws Exception{
 
         String[] uids = {"vrockai", "mvanco", "mposolda", "pjha", "jjamrich", "mcupak"};
         String[] pnms = {"775983321", "112394839", "883047384", "993485234", "334332349", "443990493"};
+        
+        log.info("Initializing data. Creating " + RECORDS_COUNT + " new items in DB.");
 
         // List<PhoneCallBean> pcl = hibernateService.getPhoneCallList();
         for (int i = 0; i < maxRecords; i++) {
@@ -61,6 +68,8 @@ public class InitDbHelper {
 
             hibernateService.savePhoneCall(pcb);
         }
+        
+        log.info("Data initialization done.");
 	}
 
 }

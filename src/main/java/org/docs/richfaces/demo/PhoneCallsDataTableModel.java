@@ -22,7 +22,6 @@
 package org.docs.richfaces.demo;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,6 @@ import org.ajax4jsf.model.SequenceRange;
 import org.ajax4jsf.model.SerializableDataModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.docs.richfaces.demo.chart.PieChart;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -69,7 +67,7 @@ public class PhoneCallsDataTableModel extends SerializableDataModel implements M
 	private PhoneCallBean dataItem; 
 	
 	private Integer rowCount; // better to buffer row count locally	
-	private int rowsPerPage = 5;
+	private int rowsPerPage = 100;
 	private int pageScroller = 1;
 	
 	private DateIntervalFilter callStartFilter = new DateIntervalFilter("callStart");
@@ -181,6 +179,24 @@ public class PhoneCallsDataTableModel extends SerializableDataModel implements M
 			visitor.process(context, item, argument);
 		}
 	}
+	
+	/**
+	 * This method provide data for dataTable with simple dataScroller instead of walking method
+	 * @return
+	 */
+	public List<SelectItem> getPagesToScroll() {
+	    
+        List<SelectItem> list = new ArrayList<SelectItem>();
+        
+        for (int i = 0; i <=hibernateService.getRowCount()/ rowsPerPage; i++) {
+            if (Math.abs(i-pageScroller) < 5){
+                SelectItem item = new SelectItem(i);
+                if (pageScroller==i) item.setDisabled(true); 
+                list.add(item);
+            } 
+        }
+        return list;
+    }
 
 	@Override
 	public int getRowCount() {
@@ -234,14 +250,6 @@ public class PhoneCallsDataTableModel extends SerializableDataModel implements M
 		return result;
 	}
 	
-	 public void paint(OutputStream out, Object data) throws IOException{
-
-		 @SuppressWarnings("unchecked")
-			PieChart chart = new PieChart("Calls performed by selected number", 
-					(List<Object[]>)hibernateService.getChartDataForPhoneNumber(phoneFilter.getPhoneNumber()));
-            chart.writeChartAsPng(out);
-	    }
-
 	@Override
 	public void setRowIndex(int arg0) {
 		throw new UnsupportedOperationException();

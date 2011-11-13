@@ -141,7 +141,7 @@ public class PhoneCallHibernateServiceImpl implements PhoneCallHibernateService 
 			Number count = (Number)s.createCriteria(PhoneCallBean.class).setProjection(Projections.rowCount()).uniqueResult();			
 			t.commit();
 			
-			log.info(" ### available row count is = " + (count!=null?count.intValue():count));
+			log.debug(" ### available row count is = " + (count!=null?count.intValue():count));
 			return count != null ? count.intValue() : 0;
 			
 		} catch (Exception e) {

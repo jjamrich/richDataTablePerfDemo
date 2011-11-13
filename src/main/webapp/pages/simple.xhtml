@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+<ui:composition template="/templates/template.xhtml">
+
+	<ui:define name="head">
+		<style>
+			.col1 {width: 90px;};
+			.col2 {width: 40px;};
+			.col3 {width: 40px;};
+			.col4 {width: 90px;};
+			.col5 {width: 90px;};			
+		</style>
+	</ui:define>
+	
+	<ui:define name="title">
+		Simple rich:dataTable and Hibernate coordination demo with simple data source
+	</ui:define>
+
+	<ui:define name="body" >
+	
+		<h2>Simple rich:dataTable</h2>
+		
+		<h:messages />
+		
+		<h:form id="dataTableFrom">
+			
+			<rich:panel header="Call overview 2" >
+            
+                <rich:dataTable id="phoneCallsTab2"
+                    rows="#{phoneCallsModel.rowsPerPage}" columnClasses="col1,col2,col3,col4,col5"
+                    value="#{phoneCallsModel}" var="item" width="330px" >
+                    
+                    <f:facet name="header">
+                        <rich:datascroller id="ds1" for="phoneCallsTab2" maxPages="5" page="#{phoneCallsModel.pageScroller}" />
+                     </f:facet>
+                    
+                    <rich:column id="col_1" label="Name">
+                            <f:facet name="header">
+                                <h:outputText value="Name"/>
+                            </f:facet>
+                            <h:outputText value="#{item.callerName}"/>
+                     </rich:column>
+                     
+                     <rich:column id="col_2" label="Phone">
+                            <f:facet name="header">
+                                <h:outputText value="Phone"/>
+                            </f:facet>
+                            <h:outputText value="#{item.phoneNumber}"/>
+                     </rich:column>
+                     
+                     <rich:column id="col_3" label="Called phone">
+                            <f:facet name="header">
+                                <h:outputText value="Called phone"/>
+                            </f:facet>
+                            <h:outputText value="#{item.desPhoneNumber}"/>
+                     </rich:column>
+                     
+                     <rich:column id="col_4" label="Call start">
+                            <f:facet name="header">
+                                <h:outputText value="Call start"/>
+                            </f:facet>
+                            <h:outputText value="#{item.callStart}"/>
+                     </rich:column>
+                     
+                     <rich:column id="col_5" label="Call end">
+                            <f:facet name="header">
+                                <h:outputText value="Call end"/>
+                            </f:facet>
+                            <h:outputText value="#{item.callEnd}"/>
+                     </rich:column>
+                    
+                    <f:facet name="footer">
+                        <rich:datascroller id="ds2" maxPages="20" fastControls="hide"
+                            page="#{phoneCallsModel.pageScroller}" pagesVar="pages" >
+                            <f:facet name="first">
+                                <h:outputText value="First" styleClass="scrollerCell" />
+                            </f:facet>
+                            <f:facet name="first_disabled">
+                                <h:outputText value="First" styleClass="scrollerCell" />
+                            </f:facet>
+                            <f:facet name="last">
+                                <h:outputText value="Last" styleClass="scrollerCell" />
+                            </f:facet>
+                            <f:facet name="last_disabled">
+                                <h:outputText value="Last" styleClass="scrollerCell" />
+                            </f:facet>
+                            <f:facet name="previous">
+                                <h:outputText value="Previous" styleClass="scrollerCell" />
+                            </f:facet>
+                            <f:facet name="previous_disabled">
+                                <h:outputText value="Previous" styleClass="scrollerCell" />
+                            </f:facet>
+                            <f:facet name="next">
+                                <h:outputText value="Next" styleClass="scrollerCell" />
+                            </f:facet>
+                            <f:facet name="next_disabled">
+                                <h:outputText value="Next" styleClass="scrollerCell" />
+                            </f:facet>
+                            <f:facet name="pages">
+                                <h:panelGroup>
+                                    <h:outputText value="Page " />
+                                    <h:selectOneMenu value="#{phoneCallsModel.pageScroller}"
+                                        onchange="#{rich:component('ds2')}.switchToPage(this.value)">
+                                        <f:selectItems value="#{phoneCallsModel.pagesToScroll}" />
+                                    </h:selectOneMenu>
+                                    <h:outputText value=" of #{pages}" />
+                                </h:panelGroup>
+                            </f:facet>
+                        </rich:datascroller>
+                    </f:facet>
+                </rich:dataTable>
+            </rich:panel>
+			
+		</h:form>
+		
+	</ui:define>	
+</ui:composition>
+
+</html>

@@ -8,11 +8,11 @@
   		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	
-	<managed-bean>
+	<!-- managed-bean>
 		<managed-bean-name>chartImageData</managed-bean-name>
 			<managed-bean-class>org.docs.richfaces.demo.chart.ChartImageData</managed-bean-class>
 			<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
+	</managed-bean-->
 	<application>
 		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
 		<locale-config>
