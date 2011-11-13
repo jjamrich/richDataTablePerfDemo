@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+<ui:composition template="/templates/template.xhtml">
+
+	<ui:define name="head">
+		<style>
+			.col1 {width: 90px;};
+			.col2 {width: 40px;};
+			.col3 {width: 40px;};
+			.col4 {width: 90px;};
+			.col5 {width: 90px;};			
+		</style>
+	</ui:define>
+	
+	<ui:define name="title">
+		Simple rich:dataTable and Hibernate coordination demo
+	</ui:define>
+
+	<ui:define name="body" >
+	
+		<h2>Simple rich:dataTable and Hibernate coordination demo</h2>
+		
+		<h:messages />
+	
+		<h:form id="filterForm">
+		
+			<rich:panel header="Date interval filter" >
+				<h:panelGrid columns="4" id="editContent">
+					
+					<h:outputText value="Call start from" />
+					<rich:calendar value="#{phoneCallsModel.callStartFilter.from}"
+							id="callStartFrom"
+	                        locale="en/US"
+	                        popup="true"
+	                        datePattern="#{phoneCallsModel.dateFormat}"
+	                        showApplyButton="true"
+	                        required="false" enableManualInput="true"
+	                        cellWidth="24px" cellHeight="22px" style="width:200px"/>  
+				    
+					 
+			    	<h:outputText value="to" />
+					<rich:calendar value="#{phoneCallsModel.callStartFilter.to}"
+							id="callStartTo"
+	                        locale="en/US"
+	                        popup="true"
+	                        datePattern="#{phoneCallsModel.dateFormat}"
+	                        showApplyButton="true"
+	                        required="false" enableManualInput="true"
+	                        cellWidth="24px" cellHeight="22px" style="width:200px"/>  
+				  
+				    
+				    <h:outputText value="Call end from" />
+					<rich:calendar value="#{phoneCallsModel.callEndFilter.from}"
+							id="callEndFrom"
+	                        locale="en/US"
+	                        popup="true"
+	                        datePattern="#{phoneCallsModel.dateFormat}"
+	                        showApplyButton="true"
+	                        required="false" enableManualInput="true"
+	                        cellWidth="24px" cellHeight="22px" style="width:200px"/>  
+
+			    	<h:outputText value="to" />
+					<rich:calendar value="#{phoneCallsModel.callEndFilter.to}"
+							id="callEndTo"
+	                        locale="en/US"
+	                        popup="true"
+	                        datePattern="#{phoneCallsModel.dateFormat}"
+	                        showApplyButton="true"
+	                        required="false" enableManualInput="true"
+	                        cellWidth="24px" cellHeight="22px" style="width:200px"/>  
+	                        
+	                <h:outputLabel value="Phone No:" />
+	                <rich:comboBox value="${phoneCallsModel.phoneFilter.phoneNumber}" defaultLabel="Select phone number">
+	                	<f:selectItems value="${phoneCallsModel.telNumList}"/>
+	                </rich:comboBox>
+	                
+	                <h:column/>
+	                <h:column />
+
+				    <h:commandButton id="submitFilter" value="Filter" />
+				    		
+				</h:panelGrid>
+			</rich:panel>
+		</h:form>
+		
+		<h:form id="dataTableFrom">
+			
+			<rich:panel header="Call overview" >
+			   <div>
+				<rich:dataTable id="phoneCallsTabSeam" value="#{phoneCallsModel}" columnClasses="col1,col2,col3,col4,col5"
+	                                        var="item" rows="#{phoneCallsModel.rowsPerPage}" width="330px" >
+	           		 <rich:column id="col_1" sortable="true" sortBy="#{item.callerName}" sortOrder="DESCENDING"
+	                   			filterBy="#{item.callerName}" filterEvent="onkeyup" label="Name">
+	                        <f:facet name="header">
+	                            <h:outputText value="Name"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.callerName}"/>
+	                 </rich:column>
+	                 
+	                 <rich:column id="col_2" sortable="true" sortBy="#{item.phoneNumber}" sortOrder="DESCENDING"
+	                   			filterBy="#{item.phoneNumber}" filterEvent="onkeyup" label="Phone">
+	                        <f:facet name="header">
+	                            <h:outputText value="Phone"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.phoneNumber}"/>
+	                 </rich:column>
+	                 
+	                 <rich:column id="col_3" sortable="true" sortBy="#{item.desPhoneNumber}" sortOrder="DESCENDING"
+	                   			filterBy="#{item.desPhoneNumber}" filterEvent="onkeyup" label="Called phone">
+	                        <f:facet name="header">
+	                            <h:outputText value="Called phone"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.desPhoneNumber}"/>
+	                 </rich:column>
+	                 
+	                 <rich:column id="col_4" sortable="true" sortBy="#{item.callStart}" sortOrder="DESCENDING"
+	                   			 label="Call start"> <!-- filterBy="#{item.callStart}" filterEvent="onkeyup" -->
+	                        <f:facet name="header">
+	                            <h:outputText value="Call start"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.callStart}"/>
+	                 </rich:column>
+	                 
+	                 <rich:column id="col_5" sortable="true" sortBy="#{item.callEnd}" sortOrder="DESCENDING"
+	                   			 label="Call end"> <!-- filterBy="#{item.callEnd}" filterEvent="onkeyup" -->
+	                        <f:facet name="header">
+	                            <h:outputText value="Call end"/>
+	                        </f:facet>
+	                        <h:outputText value="#{item.callEnd}"/>
+	                 </rich:column>
+				</rich:dataTable>
+				
+				<rich:datascroller for="phoneCallsTabSeam" maxPages="5" page="#{phoneCallsModel.pageScroller}" />
+			   </div>
+			</rich:panel>
+			
+		</h:form>
+		
+		<rich:panel header="Calls performed by selected number"
+				rendered="#{!phoneCallsModel.phoneFilter.filterEmpty}" >
+			<a4j:mediaOutput element="img" cacheable="false" session="true"
+        	createContent="#{phoneCallsModel.paint}" value="#{chartImageData}" mimeType="image/png" />
+		</rich:panel>
+		
+	</ui:define>	
+</ui:composition>
+
+</html>

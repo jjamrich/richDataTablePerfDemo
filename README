@@ -1,0 +1,53 @@
+
+1.) This demo is another example for richfaces dataTable component using Hibernate.
+	Sorting and filtering is dedicated to Hibernate (database respectively) instead
+	of do it by richfaces.
+
+2.) How to get, compile and use this demo
+	Checkout this demo from jboss.org repo:
+	
+	 $ svn co https://svn.devel.redhat.com/repos/jboss-qa/people/jjamrich/richDataTableHibernateDemo richDataTableDemo
+	
+	This demo is maven based project, so to build it simply use maven (developed using maven 2.1.0)
+	 $ cd richDataTableDemo
+	 $ mvn install # to clean project add clean goal, such as "mvn clean install"
+	 
+	Prepare your database (only in case you want to use MySQL instead of default configured HSQLDB)
+	 This demo use MySQL. Create new DB named callsDB.
+	 For table creation you can use script placed at src/main/sql/prepare-database.sql
+	 Create user "sa", without password	 
+	 Before run this demo, need to copy (or make sure if occurs here) 
+  	 mysql-connector.jar into ${JBOSS_HOME}/server/${configuration}/lib and has set executable flag (on Linux).
+  	 You should copy java-connector.jar from target directory:
+  	 $ cp richDataTableDemo/target/richDataTableHibernateDemo/WEB-INF/lib/mysql-connector-java-5.1.8.jar $JBOSS_HOME/server/${configuration}/lib/
+  	 Change settings in configuration: uncomment MySQL related lines and comment hsqldb related lines in followind files:
+  	  src/main/resources/conf/hibernate.cfg.xml
+  	  src/main/webapp/WEB-INF/phoneCalls-ds.xml
+  	  src/test/resources/cong/hibernate.cfg.xml
+	 
+	Deploy demo into your JBoss installation (or another server such as Tomcat)
+	 $ cp target/*.war $JBOSS_HOME/server/${configuration}/deploy
+	 
+	Visit following URL in your favorit browser
+	 http://localhost:8080/richDataTableHibernateDemo
+	 
+3.) use this demo as portlet on GateIn
+	To create portlet from this demo, you should use jsf2portletConvertor tool.
+	Tool is available at https://svn.devel.redhat.com/repos/jboss-qa/people/jjamrich/jsf2portletConvertor/
+	This project is maven based, so simple checkout this project and run build.sh to compile project.
+	convert.sh script provide convert functionality wrapper.
+	Default usage is: $ ./convert.sh path_to_project_you_want_to_convert
+	
+	Note 1: this tool will change some config files (such as web.xml, faces-config.xml, or pom.xml if found).
+	Because of this is better convert copy of your current project. But don't worry, tool make copies of all files he touch.
+	
+	Note 2: There is better to name project/copy of this project by shorter name, because of too long name for project
+	should make problems for Portal to deploy portlet correctly. Project name (folder name) is used as name for new portlet.
+	 
+
+===========================================================
+Database info:
+ DB name: callsDB
+ in src/main/sql is stored script named prepare-database.sql you should use to create your own DB
+ 
+ TODO: prepare version with HSQLDB
